@@ -1,10 +1,12 @@
 import { Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import * as SecureStore from 'expo-secure-store';
+import ErrorMessage from '../components/ErrorMessage'
 
 const schema = Yup.object().shape({
     username: Yup.string().required("User name field is mandatory.").min(3, "Ensure your username has at least 3 characters."),
@@ -13,15 +15,23 @@ const schema = Yup.object().shape({
 
 export default function Login() {
 
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
     const formik = useFormik({
         initialValues: {
             username: '',
             password: ''
         },
         validationSchema: schema,
-        onSubmit: values => {
+        onSubmit: async (values) => {
             if (formik.isValid) {
-                console.log(values)
+                setLoading(true);
+                // Saving username as authenticated token 
+                SecureStore.setItemAsync("username", values.username)
+                    .then(() => console.log("Move to notice screen"))
+                    .catch((err) => setError(err)) // will never encounter
+                    .finally(() => setLoading(false));
             }
         },
     })
@@ -37,9 +47,7 @@ export default function Login() {
                         onChangeText={formik.handleChange("username")}
                         onBlur={formik.handleBlur("username")} />
 
-                    {formik.touched.username && formik.errors.username && (
-                        <Text className='text-sm text-red-600 mb-2'>{formik.errors.username}</Text>
-                    )}
+                    {formik.touched.username && formik.errors.username && (<ErrorMessage error={formik.errors.username} />)}
 
                     <Input
                         label='Password'
@@ -49,11 +57,12 @@ export default function Login() {
                         secureTextEntry
                     />
 
-                    {formik.touched.password && formik.errors.password && (
-                        <Text className='text-sm text-red-600 mb-2'>{formik.errors.password}</Text>
-                    )}
+                    {formik.touched.password && formik.errors.password && (<ErrorMessage error={formik.errors.password} />)}
                 </View>
-                <Button title='Login' type='primary' className='w-full' onPress={formik.handleSubmit} />
+
+                {error && <ErrorMessage error={error} style='mb-4' />}
+
+                <Button loading={loading} title='Login' type='primary' style='w-full' onPress={formik.handleSubmit} />
             </View>
         </SafeAreaView>
     )

@@ -6,6 +6,10 @@ _Document all the stpes that im following to build this application_
 
 - Installed React `navigation` packages for navigations
 
-- Not able to set gitlab because not getting the otp, after talking with moshiur vai decide to go with github than had another issue using new github account. to resolve this issue setup ssh
+- Not able to set gitlab because not getting the otp, after talking with moshiur vai decide to go with github than had another issue using new github account. to resolve this issue setup github ssh things
 
-- Using formik and yup for form and validations
+- Using `formik` and `yup` for form and input validations
+
+- Using `expo-secure-store` package for encrypt and securely store login data
+
+-

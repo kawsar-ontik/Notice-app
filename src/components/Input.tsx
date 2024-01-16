@@ -9,7 +9,7 @@ interface Props {
     onBlur?: (e: unknown) => void
 }
 
-export default function Input({ label, placeholder, onChangeText, onBlur, secureTextEntry }: Props) {
+export default function Input({ label, placeholder, onChangeText, onBlur, secureTextEntry = false }: Props) {
     return (
         <View className='py-3'>
             <Text className='text-sm pb-2'>{label}</Text>
@@ -18,7 +18,7 @@ export default function Input({ label, placeholder, onChangeText, onBlur, secure
                 className='border rounded-lg border-gray-200 p-4'
                 onChangeText={onChangeText}
                 onBlur={onBlur}
-                secureTextEntry
+                secureTextEntry={secureTextEntry}
             />
         </View>
     )

@@ -9,9 +9,9 @@ interface Props {
 }
 
 const buttonClassesMap = {
-    common: "flex items-center justify-center w-40 h-12 rounded-lg",
+    common: "flex items-center justify-center w-full p-4 rounded-lg",
     primary: "bg-black",
-    secondary: "bg-gray-100 border border-gray-400",
+    secondary: "bg-gray-100 border border-gray-300",
 };
 
 const Button: React.FC<Props> = ({ title, type = "primary", onPress, className }) => {
@@ -19,7 +19,9 @@ const Button: React.FC<Props> = ({ title, type = "primary", onPress, className }
 
     return (
         <Pressable onPress={onPress} className={classNames}>
-            <Text className={`${type === "primary" ? "text-white" : "text-black"}`}>{title}</Text>
+            <Text className={`${type === "primary" ? "text-white" : "text-black"} text-sm font-semibold`}>
+                {title}
+            </Text>
         </Pressable>
     )
 }

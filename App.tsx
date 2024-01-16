@@ -3,6 +3,8 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './src/screens/Login';
 import Notice from './src/screens/Notice';
+import useAuth from './src/hooks/useAuth';
+import { ActivityIndicator } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,11 +17,18 @@ const THEME = {
 };
 
 export default function App() {
+
+  const { isLoggedin, loading } = useAuth();
+
+  if (loading) return <ActivityIndicator className='flex items-center justify-center h-screen' />
+
   return (
     <NavigationContainer theme={THEME}>
-      <Stack.Navigator initialRouteName='Login' screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Notice" component={Notice} />
+      <Stack.Navigator initialRouteName='Notice' screenOptions={{ headerShown: false }}>
+        {isLoggedin ?
+          <Stack.Screen name="Notice" component={Notice} />
+          : <Stack.Screen name="Login" component={Login} />
+        }
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>

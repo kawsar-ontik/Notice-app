@@ -9,7 +9,7 @@ interface Props {
     onBlur?: (e: unknown) => void
 }
 
-export default function Input({ label, placeholder, onChangeText, onBlur, secureTextEntry = false }: Props) {
+const Input: React.FC<Props> = ({ label, placeholder, onChangeText, onBlur, secureTextEntry = false }) => {
     return (
         <View className='py-3'>
             <Text className='text-sm pb-2'>{label}</Text>
@@ -23,3 +23,5 @@ export default function Input({ label, placeholder, onChangeText, onBlur, secure
         </View>
     )
 }
+
+export default Input;

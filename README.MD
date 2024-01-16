@@ -12,4 +12,6 @@ _Document all the stpes that im following to build this application_
 
 - Using `expo-secure-store` package for encrypt and securely store login data
 
--
+- Created use auth to get loggedin user info | using this hook in app.tsx to decide weather which screen should display
+
+- Displaying a modal saying weather they wanna import notices or they wanna just continue

@@ -35,9 +35,7 @@ export default function App() {
     initOneSignal();
 
     AppState.addEventListener('change', (nextAppState) => {
-      if (nextAppState === 'active') {
-        initOneSignal();
-      }
+      if (nextAppState === 'active') initOneSignal();
     });
   }, []);
 

@@ -1,4 +1,4 @@
-import { Modal, Text, View } from 'react-native'
+import { Modal, Platform, Text, View } from 'react-native'
 import React from 'react'
 import Button from './common/Button';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
@@ -20,10 +20,10 @@ const ImportNoticesModal: React.FC<Props> = ({ show, close }) => {
             transparent={true}
             onRequestClose={close}
         >
-            <View className="mt-auto h-2/5 rounded-t-3xl py-6 px-4 bg-gray-300 space-y-4">
+            <View className="mt-auto  rounded-t-3xl py-6 px-4 bg-gray-300 space-y-4">
                 <Text className="text-3xl font-semibold">Great! Now Choose Your Preference</Text>
                 <Text className='text-base leading-7'>You have the option to import notices from your files or you can choose to continue without importing. Please select the option that best suits your needs</Text>
-                <View className='flex-1 flex-row justify-end items-end mb-6'>
+                <View className={`flex flex-row justify-end items-end ${Platform.OS === "ios" ? "mb-6" : ""}`}>
                     <Button
                         type='secondary'
                         title='Import'

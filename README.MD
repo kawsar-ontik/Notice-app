@@ -30,3 +30,5 @@ $ npx expo run:android
 ```
 
 - Resolve the android build issue using Java11 and gradle-7.5 | also might have to create `local.properties` or edit this file
+
+- in `AndroidManifest.xml` add this line `<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>`

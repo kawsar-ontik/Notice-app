@@ -9,6 +9,8 @@ import * as SecureStore from 'expo-secure-store';
 import ErrorMessage from '../components/common/ErrorMessage'
 import ImportNoticesModal from '../components/ImportNoticesModal'
 import { NavigationProps } from '../types/NavigationTypes'
+import { OneSignal } from 'react-native-onesignal'
+import { oneSignalLogin } from '../providers/oneSignal'
 
 const schema = Yup.object().shape({
     username: Yup.string().required("User name field is mandatory.").min(3, "Ensure your username has at least 3 characters."),
@@ -31,9 +33,13 @@ const Login: React.FC<NavigationProps<"Login">> = () => {
             if (formik.isValid) {
                 setLoading(true);
 
+                const { username } = values || {};
                 // Saving username as authenticated token 
-                SecureStore.setItemAsync("username", values.username)
-                    .then(() => setShowModal(true))
+                SecureStore.setItemAsync("username", username)
+                    .then(() => {
+                        setShowModal(true);
+                        oneSignalLogin(username);
+                    })
                     .catch((err) => setError(err)) // will never encounter
                     .finally(() => setLoading(false));
             }

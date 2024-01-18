@@ -1,9 +1,11 @@
 import { Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { NavigationProps } from '../types/NavigationTypes'
 import Header from '../components/Header'
 import { FlashList } from '@shopify/flash-list'
+import { OneSignal } from 'react-native-onesignal'
+import { requestPushPermission } from '../providers/oneSignal'
 
 const NOTICES = [
     {
@@ -24,6 +26,11 @@ const NOTICES = [
 ]
 
 const Notice: React.FC<NavigationProps<"Notice">> = () => {
+
+    useEffect(() => {
+        requestPushPermission();
+    }, [])
+
     return (
         <SafeAreaView>
             <Header />

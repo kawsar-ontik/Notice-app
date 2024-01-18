@@ -1,11 +1,12 @@
-import { Text, View } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { NavigationProps } from '../types/NavigationTypes'
 import Header from '../components/Header'
 import { FlashList } from '@shopify/flash-list'
-import { OneSignal } from 'react-native-onesignal'
 import { requestPushPermission } from '../providers/oneSignal'
+import useAuth from '../hooks/useAuth'
+import { OneSignal } from 'react-native-onesignal'
 
 const NOTICES = [
     {
@@ -25,10 +26,21 @@ const NOTICES = [
     },
 ]
 
-const Notice: React.FC<NavigationProps<"Notice">> = () => {
+const Notice: React.FC<NavigationProps<"Notice">> = ({ navigation }) => {
+
+    const { isLoggedin, loading } = useAuth();
 
     useEffect(() => {
-        requestPushPermission();
+        if (loading) return;
+        if (!isLoggedin) navigation.navigate("Login");
+
+        if (!loading && isLoggedin) requestPushPermission();
+    }, [loading, isLoggedin])
+
+    useEffect(() => {
+        OneSignal.Notifications.addEventListener('click', (event) => {
+            console.log('OneSignal: notification clicked:', event);
+        });
     }, [])
 
     return (

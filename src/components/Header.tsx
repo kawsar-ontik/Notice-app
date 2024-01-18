@@ -1,18 +1,21 @@
 import React from 'react'
-import { Pressable, Text, View } from 'react-native'
-import * as SecureStore from 'expo-secure-store';
+import { TouchableOpacity, Text, View } from 'react-native'
+import useAuth from '../hooks/useAuth';
+import { useNavigation } from '@react-navigation/native';
 
 const Header = () => {
-    const handleLogout = async () => {
-        await SecureStore.deleteItemAsync("username");
-    }
+    const { removeUsername: logout } = useAuth();
+    const navigation = useNavigation();
 
     return (
         <View className='bg-black p-4 flex flex-row justify-between items-center'>
             <Text className='text-white text-xl font-semibold'>Notices</Text>
-            <Pressable onPress={handleLogout}>
+            <TouchableOpacity onPress={() => {
+                logout();
+                navigation.navigate("Login" as never);
+            }}>
                 <Text className='text-white'>Logout</Text>
-            </Pressable>
+            </TouchableOpacity>
         </View>
     )
 }

@@ -19,7 +19,7 @@ const THEME = {
 };
 
 export default function App() {
-  const { isLoggedin, loading } = useAuth();
+  const { loading } = useAuth();
 
   useEffect(() => {
     oneSignalInitialization();
@@ -30,10 +30,8 @@ export default function App() {
   return (
     <NavigationContainer theme={THEME}>
       <Stack.Navigator initialRouteName='Notice' screenOptions={{ headerShown: false }}>
-        {isLoggedin ?
-          <Stack.Screen name="Notice" component={Notice} />
-          : <Stack.Screen name="Login" component={Login} />
-        }
+        <Stack.Screen name="Notice" component={Notice} />
+        <Stack.Screen name="Login" component={Login} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>

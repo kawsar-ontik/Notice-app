@@ -12,9 +12,9 @@ _Document all the stpes that im following to build this application_
 
 - Using `expo-secure-store` package for encrypt and securely store login data
 
-- Created use auth to get loggedin user info | using this hook in app.tsx to decide which screen should display
+- Created use auth to get loggedin user info
 
-- Displaying a modal asking their preference
+- Displaying a modal asking their preference they will be able to import or continue
 
 - One signal setup done |
 - Follow this link: https://documentation.onesignal.com/docs/react-native-expo-sdk-setup and go over each step properly and make sure these command works properly

@@ -29,10 +29,12 @@ export const createTable = () => {
 
 
 export const saveNotice = async (notice: INotice) => {
+    const { id, title, body, date } = notice || {};
+
     db.transaction((tx) => {
         tx.executeSql(
             "insert into Notice (id, title, body, date) values (?, ?, ?, ?);",
-            [notice.id, notice.title, notice.body, notice.date.toISOString()]
+            [id, title, body, date]
         );
     });
 };
@@ -45,7 +47,7 @@ export const getNotices = () => {
                 "select * from Notice order by date desc;",
                 [],
                 (_, { rows: { _array } }) => {
-                    console.log("Here _array", _array);
+                    // console.log("Here _array", _array);
                     resolve(_array);
                 },
                 (_, error) => {

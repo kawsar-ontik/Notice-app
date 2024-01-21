@@ -1,4 +1,4 @@
-import { Alert, Text, View } from 'react-native'
+import { Alert, ScrollView, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { NavigationProps } from '../types/NavigationTypes'
@@ -42,7 +42,8 @@ const Notice: React.FC<NavigationProps<"Notice">> = ({ navigation }) => {
     }, [])
 
     const handleForegroundNotification = async (event: any) => {
-        const { title, body, notificationId } = event?.notification || {};
+        const { title, body, notificationId, rawPayload } = event?.notification || {};
+        const parsedPayload = JSON.parse(rawPayload);
 
         Alert.alert(
             title as string,
@@ -50,23 +51,27 @@ const Notice: React.FC<NavigationProps<"Notice">> = ({ navigation }) => {
             [
                 {
                     text: "OK",
-                    onPress: async () => await saveNotice({ title, body, id: notificationId, date: new Date() })
-                        .then(() => console.log("Saving Done"))
+                    onPress: async () => {
+                        const newNotice = { title, body, id: notificationId, date: parsedPayload["google.sent_time"] };
+                        await saveNotice(newNotice)
+                            .then(() => setNotices((prev) => [newNotice, ...prev]))
+                    }
                 }
             ]
         );
     }
 
     const handleNotificationClick = async (event: any) => {
-        const { title, body, notificationId } = event?.notification || {};
-        await saveNotice({ title, body, id: notificationId, date: new Date() })
-            .then(() => console.log("Saving Done"))
+        const { title, body, notificationId, rawPayload } = event?.notification || {};
+        const parsedPayload = JSON.parse(rawPayload);
+        const newNotice = { title, body, id: notificationId, date: parsedPayload["google.sent_time"] };
+        await saveNotice(newNotice).then(() => setNotices((prev) => [newNotice, ...prev]))
     }
 
     return (
         <SafeAreaView>
             <Header />
-            <View className='h-screen p-4'>
+            <ScrollView className='p-4'>
                 <FlashList
                     data={notices}
                     renderItem={({ item }) => (
@@ -79,10 +84,9 @@ const Notice: React.FC<NavigationProps<"Notice">> = ({ navigation }) => {
                     keyExtractor={(item: INotice) => item?.id}
                     ItemSeparatorComponent={() => <View className='h-4' />}
                     ListEmptyComponent={() => <Text className='text-sm font-medium text-center'>No Notices found</Text>}
-                    estimatedItemSize={10}
+                    estimatedItemSize={20}
                 />
-            </View>
-
+            </ScrollView>
         </SafeAreaView>
     )
 }
